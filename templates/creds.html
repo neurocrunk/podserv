@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> POD Server Prompt </title>
+	<meta charset="utf-8"
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/POD_Bootstrap.css') }}">
+
+</head>
+
+<body>
+
+<div style="text-align: center" class="container">
+    <br>
+    <h1> Please Login </h1>
+    <br>
+    <form action="" class="form-inline" method="post">
+    <input type="text" class="form-control"
+    placeholder = "n00b" name="username"
+    value="{{request.form.username}}">
+    <input type="text" class="form-control"
+    placeholder = "trustno1" name="password"
+    value="{{request.form.username}}">
+    <input class="btn btn-default" type="submit">
+
+</div>
+
+
+</body>
+
+
+</html>

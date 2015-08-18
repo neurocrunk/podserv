@@ -1,0 +1,94 @@
+Testing/design notes - 
+
+
+- used Jinja templating (exposed only function names, not files/paths)
+
+- flask is implicit deny by default... if the SPECIFIC route isn't written into the program, it raises an exception handled by a 404
+
+
+- the server itself is fairly robust - I wrote a script, aptly named 'plscrash', to test the app/server as I was worried about the gif on the 404 page having an affect on how the product withstood a myriad of requests - 
+
+import urllib2
+
+while True:
+	urllib2.urlopen("http://localhost:4545/foo/bar").read()
+
+
+
+This script requested a page that didn't exist, and therefore returned the 404 (with the fatty gif) at around 10,0000 reqs/s (measured with Wireshark/stopwatch)
+
+
+ - screenshot  -
+
+
+
+
+
+The server seemed to hold up well, although I only tested it for about ~ 10 min, and I was quite happy with how it handled threads/memory. 
+
+
+
+
+
+
+Random?  
+
+
+
+
+
+        When it comes to jinja templating, url_for accepts a function name... 
+
+
+        e.g. if I have a function called homepage on the route /, then I'll specify 
+url_for('homepage') in my template
+
+
+
+
+Because of easy python logic, you can easily manipulate response headers conditionally
+
+e.g. 
+
+import re
+
+from flask import Flask
+from flask import request
+
+
+app = Flask(__name__)
+
+def add_headers_to_fontawesome_static_files(response):
+    """
+    Fix for font-awesome files: after Flask static send_file() does its
+    thing, but before the response is sent, add an
+    Access-Control-Allow-Origin: *
+    HTTP header to the response (otherwise browsers complain).
+    """
+
+    if (request.path and
+        re.search(r'\.(ttf|woff|svg|eot)$', request.path)):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+
+    return response
+
+
+
+
+    If you want something to be changed on all pages/paths, simply add a route for it 
+
+
+   e.g. 
+
+   @app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+slowloris.pl - not vulnerable (to my knowledge) because of the server's extremely simple method of operation.... receive get, serve data, close socket    
+
+
+Vuln - ddos - requesting a 404 page with a large gif sometimes broke the fuzzer? 
+
+- browser requests (non exceptions) always had a higher affinity and broke the fuzzer 
