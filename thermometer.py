@@ -3,9 +3,7 @@ from flask.ext.autoindex import AutoIndex
 
 thermometer = Flask('flaskapp')
 
-thermometer.secret_key = 'supersecretthinggoeshere'
-
-do_pretty = AutoIndex(thermometer, '/Users/jack/ncc_project/POD_Server/web', add_url_rules=False)
+do_pretty = AutoIndex(thermometer, '/your/path/here/podserv/web', add_url_rules=False)
 
     
 @thermometer.route('/submit', methods=('GET', 'POST'))

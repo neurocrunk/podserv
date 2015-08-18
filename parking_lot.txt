@@ -1,6 +1,0 @@
-
-
-        When it comes to jinja templating, url_for accepts a function name... 
-
-
-        e.g. if I have a function called homepage on the route /, then I'll specify url_for('homepage') in my template
